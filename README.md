@@ -16,8 +16,8 @@ And implemengint our own based on https://python-social-auth-docs.readthedocs.io
 Create a .env file
 
 ``` text
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = yourkey.apps.googleusercontent.com
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = YOURSECRET
+SOCIAL_AUTH_MUSICBRAINZ_KEY = yourkey.apps.googleusercontent.com
+SOCIAL_AUTH_MUSICBRAINZ_SECRET = YOURSECRET
 ```
 
 And use the following
