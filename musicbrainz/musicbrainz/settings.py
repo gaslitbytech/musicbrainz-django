@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'entities.apps.EntitiesConfig',  # every app needs this
+    'entities.apps.EntitiesConfig',  # every django app needs this
 
     'social_django',  # social-auth-app-django
 ]
