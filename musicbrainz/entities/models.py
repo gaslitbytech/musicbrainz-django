@@ -125,3 +125,26 @@ class ArtistSearch(models.Model):
     sortname = models.TextField()  #	the artist's sort name
     tag = models.TextField()  #	a tag attached to the artist
     _type = models.TextField()  #	the artist's type (“person”, “group”, ...)
+
+
+
+class Recording:
+   id = models.UUIDField(
+           primary_key=True,
+           default=uuid.uuid4,
+           editable=False
+           )    # 35723b60-732e-4bd8-957f-320b416e7b7f
+   title = models.TextField() # "Get Lucky"
+   artistCredit = models.TextField() # Daft Punk feat. Pharrell Williams & Nile Rodgers
+   artist_list = []   # Daft punk, Pharrell Williams, Nile Rodgers
+   artist_join = []   # Strings " feat. ",", "
+
+class Collection:
+   id = models.UUIDField(
+           primary_key=True,
+           default=uuid.uuid4,
+           editable=False
+           )
+   entity_type=models.TextField() # Collection of reccordings, artists, releases, etc
+   _type =models.TextField()  # sub type, maybe include this in the above?
+   
