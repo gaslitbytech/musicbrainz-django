@@ -3,6 +3,7 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
+import urllib.request, json 
 
 """
 <artist-list>
@@ -128,7 +129,7 @@ class ArtistSearch(models.Model):
 
 
 
-class Recording:
+class Recording(models.Model):
    id = models.UUIDField(
            primary_key=True,
            default=uuid.uuid4,
@@ -138,8 +139,12 @@ class Recording:
    artistCredit = models.TextField() # Daft Punk feat. Pharrell Williams & Nile Rodgers
    artist_list = []   # Daft punk, Pharrell Williams, Nile Rodgers
    artist_join = []   # Strings " feat. ",", "
+   def __init__(self,id):
+       url='http://musicbrainz.org/ws/2/recording/%s??inc=artist-credits&fmt=json' % id
+       
 
-class Collection:
+
+class Collection(models.Model):
    id = models.UUIDField(
            primary_key=True,
            default=uuid.uuid4,
@@ -147,4 +152,4 @@ class Collection:
            )
    entity_type=models.TextField() # Collection of reccordings, artists, releases, etc
    _type =models.TextField()  # sub type, maybe include this in the above?
-   
+
