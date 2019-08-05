@@ -25,7 +25,7 @@ SECRET_KEY = '76c1il_*3!n(h6h8i=u%3d^^8gl9m9#$vmm_bkvm1e3q7y$9y)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'mugio.serveo.net']
 
 
 # Application definition
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'entities.apps.EntitiesConfig',  # every app needs this
+
+    'social_django',  # social-auth-app-django
 ]
 
 MIDDLEWARE = [
@@ -118,3 +122,66 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# See https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+# SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    # django.contrib.auth.backends.ModelBackend',
+    'musicbrainz.oauth2.MusicBrainzOAuth2',
+)
+
+SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
+# SOCIAL_AUTH_STORAGE = 'app.models.CustomDjangoStorage'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', 
+    None
+)
+if not SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = input('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', 
+    None
+)
+
+if not SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = input('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile', 'openid']
+
+# musicbrainz
+SOCIAL_AUTH_MUSICBRAINZ_KEY = os.environ.get(
+    'SOCIAL_AUTH_MUSICBRAINZ_KEY', 
+    None
+)
+if not SOCIAL_AUTH_MUSICBRAINZ_KEY:
+    SOCIAL_AUTH_MUSICBRAINZ_KEY = input('SOCIAL_AUTH_MUSICBRAINZ_KEY:')
+
+SOCIAL_AUTH_MUSICBRAINZ_SECRET = os.environ.get(
+    'SOCIAL_AUTH_MUSICBRAINZ_SECRET', 
+    None
+)
+
+if not SOCIAL_AUTH_MUSICBRAINZ_SECRET:
+    SOCIAL_AUTH_MUSICBRAINZ_SECRET = input('SOCIAL_AUTH_MUSICBRAINZ_SECRET:')
+
+# profile
+# View the user's public profile information (username, age, country, homepage).
+# email
+# View the user's email.
+# tag
+# View and modify the user's private tags.
+# rating
+# View and modify the user's private ratings.
+# collection
+# View and modify the user's private collections.
+# submit_isrc
+# Submit new ISRCs to the database.
+# submit_barcode
+# Submit barcodes to the database.
+# SOCIAL_AUTH_MUSICBRAINZ_SCOPE = ['profile', 'collection',]
