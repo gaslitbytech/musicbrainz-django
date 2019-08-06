@@ -1,3 +1,5 @@
+import base64
+
 from social_core.backends.oauth import BaseOAuth2
 
 """
@@ -40,26 +42,28 @@ In case of an error, the response will look like this:
 class MusicBrainzOAuth2(BaseOAuth2):
     """MusicBrainz OAuth2 authentication backend"""
     name = 'musicbrainz'
+    ID_KEY = 'id'
     AUTHORIZATION_URL = 'https://musicbrainz.org/oauth2/authorize'
     ACCESS_TOKEN_URL = 'https://musicbrainz.org/oauth2/token'
+    ACCESS_TOKEN_METHOD = 'POST'
     SCOPE_SEPARATOR = ' '
+    REDIRECT_STATE = False
     EXTRA_DATA = [
-        # ('id', 'id'),
-        # ('expires', 'expires')
+        ('refresh_token', 'refresh_token'),
     ]
 
     DEFAULT_SCOPE = ['profile', 'collection']
 
-    # github
-    # def get_user_details(self, response):
-    #     """Return user details from GitHub account"""
-    #     return {'username': response.get('login'),
-    #             'email': response.get('email') or '',
-    #             'first_name': response.get('name')}
+    def auth_headers(self):
+        auth_str = '{0}:{1}'.format(*self.get_key_and_secret())
+        b64_auth_str = base64.urlsafe_b64encode(auth_str.encode()).decode()
+        return {
+            'Authorization': 'Basic {0}'.format(b64_auth_str)
+        }
 
-    # def user_data(self, access_token, *args, **kwargs):
-    #     """Loads user data from service"""
-    #     url = 'https://api.github.com/user?' + urlencode({
-    #         'access_token': access_token
-    #     })
-    #     return self.get_json(url)
+    def user_data(self, access_token, *args, **kwargs):
+        """Loads user collection data from service"""
+        return self.get_json(
+            'https://musicbrainz.org/ws/2/collection?fmt=json',
+            headers={'Authorization': 'Bearer {0}'.format(access_token), }
+        )

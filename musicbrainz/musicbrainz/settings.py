@@ -25,7 +25,7 @@ SECRET_KEY = '76c1il_*3!n(h6h8i=u%3d^^8gl9m9#$vmm_bkvm1e3q7y$9y)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'mugio.serveo.net']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'mugio.serveo.net']
 
 
 # Application definition
@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.spotify.SpotifyOAuth2',
     # django.contrib.auth.backends.ModelBackend',
     'musicbrainz.oauth2.MusicBrainzOAuth2',
 )
@@ -137,6 +137,8 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
 # SOCIAL_AUTH_STORAGE = 'app.models.CustomDjangoStorage'
+
+# google oauth2
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get(
     'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', 
     None
@@ -167,8 +169,24 @@ SOCIAL_AUTH_MUSICBRAINZ_SECRET = os.environ.get(
     None
 )
 
-if not SOCIAL_AUTH_MUSICBRAINZ_SECRET:
-    SOCIAL_AUTH_MUSICBRAINZ_SECRET = input('SOCIAL_AUTH_MUSICBRAINZ_SECRET:')
+# sporify
+SOCIAL_AUTH_SPOTIFY_KEY = os.environ.get(
+    'SOCIAL_AUTH_SPOTIFY_KEY', 
+    None
+)
+if not SOCIAL_AUTH_SPOTIFY_KEY:
+    SOCIAL_AUTH_SPOTIFY_KEY = input('SOCIAL_AUTH_SPOTIFY_KEY:')
+
+SOCIAL_AUTH_SPOTIFY_SECRET = os.environ.get(
+    'SOCIAL_AUTH_SPOTIFY_SECRET', 
+    None
+)
+
+if not SOCIAL_AUTH_SPOTIFY_SECRET:
+    SOCIAL_AUTH_SPOTIFY_SECRET = input('SOCIAL_AUTH_SPOTIFY_SECRET:')
+
+LOGIN_URL = '/entities/login'
+LOGIN_REDIRECT_URL = '/entities'
 
 # profile
 # View the user's public profile information (username, age, country, homepage).
@@ -185,3 +203,4 @@ if not SOCIAL_AUTH_MUSICBRAINZ_SECRET:
 # submit_barcode
 # Submit barcodes to the database.
 # SOCIAL_AUTH_MUSICBRAINZ_SCOPE = ['profile', 'collection',]
+# SOCIAL_AUTH_TRAILING_SLASH = False
