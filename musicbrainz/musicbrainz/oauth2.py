@@ -61,9 +61,29 @@ class MusicBrainzOAuth2(BaseOAuth2):
             'Authorization': 'Basic {0}'.format(b64_auth_str)
         }
 
-    def user_data(self, access_token, *args, **kwargs):
+    def get_user_details(self, response):
+        """
+        Return user details from musicbrainz account. The response is from https://musicbrainz.org/oauth2/userinfo?
+        fro the user_data function below
+        """
+        fullname, first_name, last_name = self.get_user_names(response.get('sub'))
+        return {'username': response.get('id'),
+                'email': response.get('email'),
+                'fullname': fullname,
+                'first_name': first_name,
+                'last_name': last_name}
+
+    def user_collection(self, access_token, *args, **kwargs):
         """Loads user collection data from service"""
         return self.get_json(
             'https://musicbrainz.org/ws/2/collection?fmt=json',
             headers={'Authorization': 'Bearer {0}'.format(access_token), }
+        )
+
+    def user_data(self, access_token, *args, **kwargs):
+        """Loads user data from service"""
+        return self.get_json(
+            'https://musicbrainz.org/oauth2/userinfo?access_token={access_token}'.format(
+                access_token=access_token,
+            )
         )

@@ -138,24 +138,6 @@ SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
 # SOCIAL_AUTH_STORAGE = 'app.models.CustomDjangoStorage'
 
-# google oauth2
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get(
-    'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', 
-    None
-)
-if not SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:
-    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = input('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:')
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
-    'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', 
-    None
-)
-
-if not SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
-    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = input('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:')
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile', 'openid']
-
 # musicbrainz
 SOCIAL_AUTH_MUSICBRAINZ_KEY = os.environ.get(
     'SOCIAL_AUTH_MUSICBRAINZ_KEY', 
