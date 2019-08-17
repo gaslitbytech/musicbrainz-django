@@ -52,8 +52,16 @@ class MusicBrainzOAuth2(BaseOAuth2):
         ('refresh_token', 'refresh_token'),
     ]
 
-    DEFAULT_SCOPE = ['profile', 'collection']
-
+    DEFAULT_SCOPE = [
+        'profile', # View the user's public profile information (username, age, country, homepage).
+        'email', # View the user's email.
+        'tag',  # View and modify the user's private tags.
+        'rating',  # View and modify the user's private ratings.
+        'collection',  # View and modify the user's private collections.
+        'submit_isrc',  # Submit new ISRCs to the database.
+        'submit_barcode',  # Submit barcodes to the database.
+    ]
+    
     def auth_headers(self):
         auth_str = '{0}:{1}'.format(*self.get_key_and_secret())
         b64_auth_str = base64.urlsafe_b64encode(auth_str.encode()).decode()

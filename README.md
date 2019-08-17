@@ -3,8 +3,20 @@ Project to expose https://musicbrainz.org data. Started in #pycon-au-2019 sprint
 
 ## Get Started Developing
 
+Install venv into this projet. This is on purposely in the gitignore. This is required once only. Unless you need to delete your venv directory. Note when you update python from 3.7.3 to 3.7.4 you may be best to remove venv and restall dependencies. 
+
 ``` shell
 virtualenv --python=python3 venv
+```
+
+Every time you log into your terminal. Note . is just short for `source`
+
+``` shell
+. venv/bin/activate
+```
+
+``` shell
+pip install -r requirements.txt
 ```
 
 ## Design Decisions
