@@ -130,7 +130,7 @@ STATIC_URL = '/static/'
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.spotify.SpotifyOAuth2',
-    # django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
     'musicbrainz.oauth2.MusicBrainzOAuth2',
 )
 
@@ -151,7 +151,7 @@ SOCIAL_AUTH_MUSICBRAINZ_SECRET = os.environ.get(
     None
 )
 
-# sporify
+# spotify
 SOCIAL_AUTH_SPOTIFY_KEY = os.environ.get(
     'SOCIAL_AUTH_SPOTIFY_KEY', 
     None
@@ -167,7 +167,7 @@ SOCIAL_AUTH_SPOTIFY_SECRET = os.environ.get(
 if not SOCIAL_AUTH_SPOTIFY_SECRET:
     SOCIAL_AUTH_SPOTIFY_SECRET = input('SOCIAL_AUTH_SPOTIFY_SECRET:')
 
-LOGIN_URL = '/entities/login'
+LOGIN_URL = '/entities/login-spotify'
 LOGIN_REDIRECT_URL = '/entities'
 
 
@@ -246,6 +246,11 @@ LOGGING = {
             "propagate": True,
         },
         "requests.packages.urllib3.connectionpool": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "social_core": {
             "handlers": ["console"],
             "level": "DEBUG",
             "propagate": True,

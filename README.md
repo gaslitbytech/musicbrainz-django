@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 We are using social-auth-app-django and installed it into our app using https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
 
-And implemengint our own based on https://python-social-auth-docs.readthedocs.io/en/latest/backends/implementation.html
+And implement our own based on https://python-social-auth-docs.readthedocs.io/en/latest/backends/implementation.html
 
 Create a .env file
 
@@ -36,4 +36,23 @@ And use the following
 
 ``` shell
 export $(grep -v '^#' .env | xargs -0)
+```
+
+Testing -> A few checks to verify the musicbrains api. Note refresh_token is not populated
+
+``` shell
+curl https://musicbrainz.org/oauth2/authorize?response_type=code&client_id=$SOCIAL_AUTH_MUSICBRAINZ_KEY&redirect_uri=http://localhost:8000/complete/musicbrainz/&state=GYpm3lPeBMRqGASotwbNBxbi00e6M0rV&response_type=code&scope=profile+email+tag+rating+collection+submit_isrc+submit_barcode
+```
+
+``` shell
+curl -d 'grant_type=authorization_code&redirect_uri=http://localhost:8000/complete/musicbrainz/&client_id=$SOCIAL_AUTH_MUSICBRAINZ_KEY&client_secret=$SOCIAL_AUTH_MUSICBRAINZ_SECRET' -H "Content-Type: application/x-www-form-urlencoded" -X POST https://musicbrainz.org/oauth2/token
+```
+
+The following are the automaic routes that come with python social auth
+
+``` text
+^login/(?P<backend>[^/]+)/$ [name='begin']
+^complete/(?P<backend>[^/]+)/$ [name='complete']
+^disconnect/(?P<backend>[^/]+)/$ [name='disconnect']
+^disconnect/(?P<backend>[^/]+)/(?P<association_id>\d+)/$ [name='disconnect_individual']
 ```
