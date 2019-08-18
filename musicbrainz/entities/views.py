@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.views.generic.list import ListView
 
 
-class LoginView(ListView):
-    template_name = 'entities/login.html'
+class LoginMusicBrainzView(ListView):
+    template_name = 'entities/login_musicbrainz.html'
     context_object_name = 'latest_question_list'
 
     def get_queryset(self, **kwargs):

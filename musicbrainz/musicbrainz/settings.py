@@ -170,19 +170,85 @@ if not SOCIAL_AUTH_SPOTIFY_SECRET:
 LOGIN_URL = '/entities/login'
 LOGIN_REDIRECT_URL = '/entities'
 
-# profile
-# View the user's public profile information (username, age, country, homepage).
-# email
-# View the user's email.
-# tag
-# View and modify the user's private tags.
-# rating
-# View and modify the user's private ratings.
-# collection
-# View and modify the user's private collections.
-# submit_isrc
-# Submit new ISRCs to the database.
-# submit_barcode
-# Submit barcodes to the database.
-# SOCIAL_AUTH_MUSICBRAINZ_SCOPE = ['profile', 'collection',]
-# SOCIAL_AUTH_TRAILING_SLASH = False
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'musicbrainz.pipelines.save_profile',  # <--- set the path to the function
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'null': {
+            # Null logger
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'SysLog': {
+            # Syslog system logging endpoint, if you want to view messages
+            # via mac log viewer etc.
+            'level': 'DEBUG',
+            'formatter': 'simple',
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': 'local0',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose'
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(filename)s:%(lineno)s] %(message)s\n",
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'loggers': {
+        '': {
+            # Root logger.  All loggers will bubble up to this level
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+        'django.db.backends': {
+            # Quieten down the SQL noise, allows us to leave the root
+            # logger in DEBUG.
+            'handlers': ['null'],  # Quiet by default!
+            'propagate': False,
+            'level': 'WARN',
+        },
+        'factory': {
+            'handlers': ['console'],
+            'propagate': False,
+            'level': 'INFO',
+        },
+        "requests": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "requests.packages.urllib3.connectionpool": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
