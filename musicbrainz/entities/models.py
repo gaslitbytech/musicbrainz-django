@@ -1,8 +1,10 @@
 import datetime
 import uuid
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+
 import requests, json 
 
 
@@ -129,7 +131,6 @@ class ArtistSearch(models.Model):
     _type = models.TextField()  #	the artist's type (“person”, “group”, ...)
 
 
-
 class Recording(models.Model):
    id = models.UUIDField(
            primary_key=True,
@@ -140,6 +141,7 @@ class Recording(models.Model):
    artistCredit = models.TextField() # Daft Punk feat. Pharrell Williams & Nile Rodgers
    artist_list = []   # Daft punk, Pharrell Williams, Nile Rodgers
    artist_join = []   # Strings " feat. ",", "
+
    def fetch(self):
        url='http://musicbrainz.org/ws/2/recording/%s?inc=artist-credits&fmt=json' % self.id
        print('URL: %s',url)
@@ -154,13 +156,38 @@ class Recording(models.Model):
                self.artistCredit+=item['joinphrase']
 
        return r.status_code
-            
-class Collection(models.Model):
-   id = models.UUIDField(
-           primary_key=True,
-           default=uuid.uuid4,
-           editable=False
-           )
-   entity_type=models.TextField() # Collection of reccordings, artists, releases, etc
-   _type =models.TextField()  # sub type, maybe include this in the above?
 
+
+class Collection(models.Model):
+  id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+        )
+  entity_type=models.TextField() # Collection of reccordings, artists, releases, etc
+  _type =models.TextField()  # sub type, maybe include this in the above?
+
+# import requests
+
+# user = User.objects.get(...)
+# social = user.social_auth.get(provider='google-oauth2')
+# response = requests.get(
+#     'https://www.googleapis.com/plus/v1/people/me/people/visible',
+#     params={'access_token': social.extra_data['access_token']}
+# )
+# friends = response.json()['items']
+  @staticmethod
+  def fetch():
+    user = User.objects.get(id=1)
+    social = user.social_auth.get(provider='musicbrainz')
+    url='https://musicbrainz.org/ws/2/collection?fmt=json'
+    print('URL: %s',url)
+    r=requests.get(
+      url,
+      params={'access_token': social.extra_data['access_token']}
+    )
+    if r.status_code == requests.codes.ok:
+      data=r.json()
+      print(data)
+
+    return r.status_code

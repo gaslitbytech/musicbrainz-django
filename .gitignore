@@ -139,4 +139,7 @@ dmypy.json
 # vs code
 .vscode/
 
+# MAC OS
+*.DS_Store
+
 # End of https://www.gitignore.io/api/django
