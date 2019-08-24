@@ -32,7 +32,7 @@ his is required once only. Unless you need to delete your venv directory. Note w
 virtualenv --python=python3.7 venv
 ```
 
-Every time you log into your terminal. Note `.` is just short for typing `source`
+Every time you log into your terminal. Note . is just short for typing `source`
 
 ``` shell
 . venv/bin/activate
