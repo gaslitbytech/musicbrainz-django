@@ -110,27 +110,38 @@ class ArtistSearch(models.Model):
     alias = models.TextField(blank=True, null=True)  # 	an alias attached to the artist
     area = models.TextField(blank=True, null=True)  # 	the artist's main associated area
     arid = models.UUIDField(
-        default=uuid.uuid4, 
-        editable=False, 
-        blank=True, 
-        null=True
+        default=uuid.uuid4, editable=False, blank=True, null=True
     )  # 	the artist's MBID
-    artist = models.TextField(blank=True, null=True)  # 	the artist's name (without accented characters)
-    artistaccent = models.TextField(blank=True, null=True)  # 	the artist's name (with accented characters)
+    artist = models.TextField(
+        blank=True, null=True
+    )  # 	the artist's name (without accented characters)
+    artistaccent = models.TextField(
+        blank=True, null=True
+    )  # 	the artist's name (with accented characters)
     begin = models.TextField(blank=True, null=True)  # 	the artist's begin date
     beginarea = models.TextField(blank=True, null=True)  # 	the artist's begin area
-    comment = models.TextField(blank=True, null=True)  # 	the artist's disambiguation comment
-    country = (
-        models.TextField(blank=True, null=True)
+    comment = models.TextField(
+        blank=True, null=True
+    )  # 	the artist's disambiguation comment
+    country = models.TextField(
+        blank=True, null=True
     )  # 	the 2-letter code (ISO 3166-1 alpha-2) for the artist's main associated country, or “unknown”
     end = models.TextField(blank=True, null=True)  # 	the artist's end date
     endarea = models.TextField(blank=True, null=True)  # 	the artist's end area
-    ended = models.TextField(blank=True, null=True)  # 	a flag indicating whether or not the artist has ended
-    gender = models.TextField(blank=True, null=True)  # 	the artist's gender (“male”, “female”, or “other”)
-    ipi = models.TextField(blank=True, null=True)  # 	an IPI code associated with the artist
+    ended = models.TextField(
+        blank=True, null=True
+    )  # 	a flag indicating whether or not the artist has ended
+    gender = models.TextField(
+        blank=True, null=True
+    )  # 	the artist's gender (“male”, “female”, or “other”)
+    ipi = models.TextField(
+        blank=True, null=True
+    )  # 	an IPI code associated with the artist
     sortname = models.TextField(blank=True, null=True)  # 	the artist's sort name
     tag = models.TextField(blank=True, null=True)  # 	a tag attached to the artist
-    _type = models.TextField(blank=True, null=True)  # 	the artist's type (“person”, “group”, ...)
+    _type = models.TextField(
+        blank=True, null=True
+    )  # 	the artist's type (“person”, “group”, ...)
 
 
 class Recording(models.Model):
