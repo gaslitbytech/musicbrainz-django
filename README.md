@@ -38,7 +38,7 @@ And use the following
 export $(grep -v '^#' .env | xargs -0)
 ```
 
-Testing -> A few checks to verify the musicbrains api. Note refresh_token is not populated
+Note your Terminal now having `(venv)` prepended
 
 ``` shell
 curl https://musicbrainz.org/oauth2/authorize?response_type=code&client_id=$SOCIAL_AUTH_MUSICBRAINZ_KEY&redirect_uri=http://localhost:8000/complete/musicbrainz/&state=GYpm3lPeBMRqGASotwbNBxbi00e6M0rV&response_type=code&scope=profile+email+tag+rating+collection+submit_isrc+submit_barcode
