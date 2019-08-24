@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-import requests, json 
+import requests, json
 
 
 """
@@ -96,98 +96,92 @@ import requests, json
     </artist>
     </artist-list>
 """
+
+
 class Artist(models.Model):
-    id = models.UUIDField(
-        primary_key=True, 
-        default=uuid.uuid4, 
-        editable=False
-    )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField()
     disambiguation = models.TextField()
 
     # TODO Add fields ignored from above
 
+
 class ArtistSearch(models.Model):
-    alias = models.TextField()  #	an alias attached to the artist
-    area = models.TextField()  #	the artist's main associated area
+    alias = models.TextField(blank=True, null=True)  # 	an alias attached to the artist
+    area = models.TextField(blank=True, null=True)  # 	the artist's main associated area
     arid = models.UUIDField(
-        primary_key=True, 
         default=uuid.uuid4, 
-        editable=False
-    )  #	the artist's MBID
-    artist = models.TextField()  #	the artist's name (without accented characters)
-    artistaccent = models.TextField()  #	the artist's name (with accented characters)
-    begin = models.TextField()  #	the artist's begin date
-    beginarea = models.TextField()  #	the artist's begin area
-    comment = models.TextField()  #	the artist's disambiguation comment
-    country = models.TextField()  #	the 2-letter code (ISO 3166-1 alpha-2) for the artist's main associated country, or “unknown”
-    end = models.TextField()  #	the artist's end date
-    endarea = models.TextField()  #	the artist's end area
-    ended = models.TextField()  #	a flag indicating whether or not the artist has ended
-    gender = models.TextField()  #	the artist's gender (“male”, “female”, or “other”)
-    ipi = models.TextField()  #	an IPI code associated with the artist
-    sortname = models.TextField()  #	the artist's sort name
-    tag = models.TextField()  #	a tag attached to the artist
-    _type = models.TextField()  #	the artist's type (“person”, “group”, ...)
+        editable=False, 
+        blank=True, 
+        null=True
+    )  # 	the artist's MBID
+    artist = models.TextField(blank=True, null=True)  # 	the artist's name (without accented characters)
+    artistaccent = models.TextField(blank=True, null=True)  # 	the artist's name (with accented characters)
+    begin = models.TextField(blank=True, null=True)  # 	the artist's begin date
+    beginarea = models.TextField(blank=True, null=True)  # 	the artist's begin area
+    comment = models.TextField(blank=True, null=True)  # 	the artist's disambiguation comment
+    country = (
+        models.TextField(blank=True, null=True)
+    )  # 	the 2-letter code (ISO 3166-1 alpha-2) for the artist's main associated country, or “unknown”
+    end = models.TextField(blank=True, null=True)  # 	the artist's end date
+    endarea = models.TextField(blank=True, null=True)  # 	the artist's end area
+    ended = models.TextField(blank=True, null=True)  # 	a flag indicating whether or not the artist has ended
+    gender = models.TextField(blank=True, null=True)  # 	the artist's gender (“male”, “female”, or “other”)
+    ipi = models.TextField(blank=True, null=True)  # 	an IPI code associated with the artist
+    sortname = models.TextField(blank=True, null=True)  # 	the artist's sort name
+    tag = models.TextField(blank=True, null=True)  # 	a tag attached to the artist
+    _type = models.TextField(blank=True, null=True)  # 	the artist's type (“person”, “group”, ...)
 
 
 class Recording(models.Model):
-   id = models.UUIDField(
-           primary_key=True,
-           default=uuid.uuid4,
-           editable=False
-           )    # 35723b60-732e-4bd8-957f-320b416e7b7f
-   title = models.TextField() # "Get Lucky"
-   artistCredit = models.TextField() # Daft Punk feat. Pharrell Williams & Nile Rodgers
-   artist_list = []   # Daft punk, Pharrell Williams, Nile Rodgers
-   artist_join = []   # Strings " feat. ",", "
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )  # 35723b60-732e-4bd8-957f-320b416e7b7f
+    title = models.TextField()  # "Get Lucky"
+    artistCredit = (
+        models.TextField()
+    )  # Daft Punk feat. Pharrell Williams & Nile Rodgers
+    artist_list = []  # Daft punk, Pharrell Williams, Nile Rodgers
+    artist_join = []  # Strings " feat. ",", "
 
-   def fetch(self):
-       url='http://musicbrainz.org/ws/2/recording/%s?inc=artist-credits&fmt=json' % self.id
-       print('URL: %s',url)
-       r=requests.get(url)
-       if r.status_code == requests.codes.ok:
-           data=r.json()
-           self.title=data['title']
-           for item in data['artist-credit']:
-               self.artist_list.append(item['name'])
-               self.artist_join.append(item['joinphrase'])
-               self.artistCredit+=item['name']
-               self.artistCredit+=item['joinphrase']
+    def fetch(self):
+        url = (
+            "http://musicbrainz.org/ws/2/recording/%s?inc=artist-credits&fmt=json"
+            % self.id
+        )
+        print("URL: %s", url)
+        r = requests.get(url)
+        if r.status_code == requests.codes.ok:
+            data = r.json()
+            self.title = data["title"]
+            for item in data["artist-credit"]:
+                self.artist_list.append(item["name"])
+                self.artist_join.append(item["joinphrase"])
+                self.artistCredit += item["name"]
+                self.artistCredit += item["joinphrase"]
 
-       return r.status_code
+        return r.status_code
 
 
 class Collection(models.Model):
-  id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    entity_type = (
+        models.TextField()
+    )  # Collection of reccordings, artists, releases, etc
+    _type = models.TextField()  # sub type, maybe include this in the above?
+
+    @staticmethod
+    def fetch():
+        # HACK. use the request opject
+        user = User.objects.get(id=1)
+        social = user.social_auth.get(provider="musicbrainz")
+        url = "https://musicbrainz.org/ws/2/collection?fmt=json"
+        print("URL: %s", url)
+        r = requests.get(
+            url, params={"access_token": social.extra_data["access_token"]}
         )
-  entity_type=models.TextField() # Collection of reccordings, artists, releases, etc
-  _type =models.TextField()  # sub type, maybe include this in the above?
+        if r.status_code == requests.codes.ok:
+            data = r.json()
+            print(data)
 
-# import requests
-
-# user = User.objects.get(...)
-# social = user.social_auth.get(provider='google-oauth2')
-# response = requests.get(
-#     'https://www.googleapis.com/plus/v1/people/me/people/visible',
-#     params={'access_token': social.extra_data['access_token']}
-# )
-# friends = response.json()['items']
-  @staticmethod
-  def fetch():
-    user = User.objects.get(id=1)
-    social = user.social_auth.get(provider='musicbrainz')
-    url='https://musicbrainz.org/ws/2/collection?fmt=json'
-    print('URL: %s',url)
-    r=requests.get(
-      url,
-      params={'access_token': social.extra_data['access_token']}
-    )
-    if r.status_code == requests.codes.ok:
-      data=r.json()
-      print(data)
-
-    return r.status_code
+        return r.status_code
