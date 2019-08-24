@@ -53,7 +53,7 @@ class SearchView(View):
             key_values=[]
             for k, v in data.items():
                 key_values.append(f'{k}:{v}')
-            query = 'artist:' + ' AND '.join(key_values)
+            query = ' AND '.join(key_values)
 
             params = {
                     "fmt":"json",
