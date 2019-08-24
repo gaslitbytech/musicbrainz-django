@@ -2,7 +2,7 @@ import logging
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic.list import View
+from django.views.generic.list import View, ListView 
 
 from .forms import ArtistSearchForm
 
@@ -16,7 +16,7 @@ class LoginMusicBrainzView(View):
         return []
 
 
-class LoginSpotifyView(View):
+class LoginSpotifyView(ListView):
     template_name = "entities/login_spotify.html"
 
     def get_queryset(self, **kwargs):
@@ -41,8 +41,8 @@ class SearchView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class IndexView(View):
+class IndexView(ListView):
     template_name = "entities/index.html"
 
-    def get(self, **kwargs):
+    def get_queryset(self, **kwargs):
         return []
