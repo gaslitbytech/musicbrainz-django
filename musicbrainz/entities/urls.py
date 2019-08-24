@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
-    path("serach", views.SearchView.as_view(), name="search"),
+    path("search", views.SearchView.as_view(), name="search"),
     path(
         "login-musicbrainz",
         views.LoginMusicBrainzView.as_view(),
