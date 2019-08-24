@@ -1,6 +1,6 @@
 import logging
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.generic.list import View, ListView 
 import requests
@@ -61,6 +61,7 @@ class SearchView(View):
             if r.status_code == requests.codes.ok:
                 data = r.json()
                 LOG.debug(data)
+                return JsonResponse(data)
 
             return HttpResponseRedirect('/')
 
