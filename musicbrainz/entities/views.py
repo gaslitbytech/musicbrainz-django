@@ -44,19 +44,28 @@ class SearchView(View):
 
             # remove nulls from search list
             data = {k:v for k, v in form.cleaned_data.items() if v}
-            data.update(
-                {
+
+            """
+            Note the formatting
+            http://musicbrainz.org/ws/2/artist/?query=artist:fred%20AND%20type:group%20AND%20country:US
+            http://musicbrainz.org/ws/2/artist/?query=artist:fred AND type:group AND country:US
+            """
+            key_values=[]
+            for k, v in data.items():
+                key_values.append(f'{k}:{v}')
+            query = 'artist:' + ' AND '.join(key_values)
+
+            params = {
                     "fmt":"json",
-                    "query": "artist",
+                    "query": query,
                     "access_token": social.extra_data["access_token"],
-                }
-            )
+            }
 
             url = "https://musicbrainz.org/ws/2/artist"
             LOG.debug("URL: %s", url)
             r = requests.get(
                 url,
-                params=data
+                params=params
             )
             if r.status_code == requests.codes.ok:
                 data = r.json()
