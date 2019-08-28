@@ -8,29 +8,31 @@
         <link rel="stylesheet" href="style.css" type="text/css">
     </head>
     <body>
-        <form action="/search" method="post">
-            {% csrf_token %}
-            {% for field in form %}
+        <div class="container">
+            <form action="/search" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="row">
+                        <div class="col-4">
+                            {{ field.label_tag }}
+                        </div>
+                        <div class="col-4">
+                            {{ field }}
+                        </div>
+                        <div class="col-4">
+                            {{ field.errors }}
+                            {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
                 <div class="row">
-                    <div class="col">
-                        {{ field.errors }}
-                    </div>
-                    <div class="col">
-                        {{ field.label_tag }}
-                    </div>
-                    <div class="col">
-                        {{ field }}
-                    </div>
-                    <div class="col">
-                        {% if field.help_text %}
-                        <p class="help">{{ field.help_text|safe }}</p>
-                        {% endif %}
+                    <div class="col-auto">
+                        <input type="submit" value="Search">
                     </div>
                 </div>
-            {% endfor %}
-            <div class="row">
-                <input type="submit" value="Search">
-            </div>
-        </form>
+            </form>
+        </div>
     </body>
 </html>
