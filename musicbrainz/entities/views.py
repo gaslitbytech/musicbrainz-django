@@ -2,7 +2,7 @@ import logging
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.views.generic.list import View, ListView 
+from django.views.generic.list import View, ListView
 import requests
 
 from .forms import ArtistSearchForm
@@ -27,45 +27,50 @@ class LoginSpotifyView(ListView):
 # Learning from https://docs.djangoproject.com/en/2.2/topics/class-based-views/intro/#handling-forms-with-class-based-views
 class SearchView(View):
     form_class = ArtistSearchForm
-    initial = {'': ''}
+    initial = {"": ""}
     template_name = "entities/search_template.html"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            LOG.debug('form is valid: data: %s', form.cleaned_data)
-            
+            LOG.debug("form is valid: data: %s", form.cleaned_data)
+
             user = request.user
             social = user.social_auth.get(provider="musicbrainz")
 
-            # remove nulls from search list
-            data = {k:v for k, v in form.cleaned_data.items() if v}
-            data.update(
-                {
-                    "fmt":"json",
-                    "query": "artist",
-                    "access_token": social.extra_data["access_token"],
-                }
-            )
+            # remove null / blank values from search list
+            data = {k: v for k, v in form.cleaned_data.items() if v}
+
+            """
+            Note the joining on using AND
+            http://musicbrainz.org/ws/2/artist/?query=artist:fred AND type:group AND country:US
+            """
+            key_values = []
+            for k, v in data.items():
+                key_values.append(f"{k}:{v}")
+            query = " AND ".join(key_values)
+
+            params = {
+                "fmt": "json",
+                "query": query,
+                "access_token": social.extra_data["access_token"],
+            }
 
             url = "https://musicbrainz.org/ws/2/artist"
             LOG.debug("URL: %s", url)
-            r = requests.get(
-                url,
-                params=data
-            )
+            r = requests.get(url, params=params)
             if r.status_code == requests.codes.ok:
                 data = r.json()
                 LOG.debug(data)
                 return JsonResponse(data)
 
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect("/")
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
 
 
 class IndexView(ListView):

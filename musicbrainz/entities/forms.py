@@ -10,7 +10,8 @@ class ArtistSearchForm(forms.ModelForm):
 
     class Meta:
         model = ArtistSearch
-        fields = "__all__"
+        fields = ("artist", "country")
+        # exclude = ('gender', )
 
     def clean(self):
         cleaned_data = super().clean()
