@@ -20,13 +20,13 @@ And use the following everytime your .env changes to update your Terminal with t
 export $(grep -v '^#' .env | xargs -0)
 ```
 
-## Get Started Developing
+## Configure Development
 
 Install your dev environment from virtualenv
 
 ### virtualenv
 
-his is required once only. Unless you need to delete your venv directory. Note when you update python from 3.7.3 to 3.7.4 you may be best to remove venv and restall dependencies. venv is just a convention name for calling your installation directly. This `venv` folder is on purposely in the gitignore.
+This is required once only. Unless you need to delete your venv directory. Note when you update python from 3.7.3 to 3.7.4 you may be best to remove venv and restall dependencies. venv is just a convention name for calling your installation directly. This `venv` folder is on purposely in the gitignore.
 
 ``` shell
 virtualenv --python=python3.7 venv
@@ -53,6 +53,23 @@ The following are the automaic routes that come with python social auth
 ^disconnect/(?P<backend>[^/]+)/(?P<association_id>\d+)/$ [name='disconnect_individual']
 ```
 
+## Get Started Developing
+
+Every time you log into your terminal. Note . is just short for typing `source`
+
+``` shell
+. venv/bin/activate
+```
+
+Change to dir to django root
+
+``` shell
+cd musicbrainz/
+```
+
+
+
 ## Known issues
 
 Refresh token is not populated.
+http://localhost:8000/social/complete/musicbrainz/ is used for the vue version
