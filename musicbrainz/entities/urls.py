@@ -11,4 +11,5 @@ urlpatterns = [
         name="login-musicbrainz",
     ),
     path("login-spotify", views.LoginSpotifyView.as_view(), name="login-spotify"),
+    path("area", views.AreaListView.as_view(), name="area"),
 ]
