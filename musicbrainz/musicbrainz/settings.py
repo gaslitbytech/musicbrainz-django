@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "entities.apps.EntitiesConfig",  # every django app created needs this
     "social_django",  # social-auth-app-django
-    'crispy_forms', # django crispy forms
+    # 'crispy_forms', # django crispy forms
 ]
 
 MIDDLEWARE = [

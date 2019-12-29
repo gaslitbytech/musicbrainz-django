@@ -107,6 +107,9 @@ class Artist(models.Model):
 
 
 class ArtistSearch(models.Model):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
     alias = models.TextField(blank=True, null=True)  # 	an alias attached to the artist
     area = models.TextField(blank=True, null=True)  # 	the artist's main associated area
     arid = models.UUIDField(
