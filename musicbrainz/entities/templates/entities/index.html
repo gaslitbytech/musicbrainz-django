@@ -7,7 +7,7 @@
       .leaflet-container { height: 100%; }
     </style>
     <script type="text/javascript">
-      var dataurl = '{% url "area" %}';
+      var dataurl = '{% url "world:border" %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
         // Download GeoJSON data with Ajax
@@ -27,9 +27,13 @@
     </script>
   </head>
     <body>
-        <h1>Hi</h1>>
-        <a href="{% url "social:begin" "musicbrainz" %}">musicbrainz</a>
-        <a href="{% url "social:begin" "spotify" %}">spotify</a>
-        {% leaflet_map "main" %}
+        <div>
+            <h1>Hi</h1>>
+            <a href="{% url "social:begin" "musicbrainz" %}">musicbrainz</a>
+            <a href="{% url "social:begin" "spotify" %}">spotify</a>
+        </div>
+        <div>
+            {% leaflet_map "main" %}
+        </div>
     </body>
 </html>

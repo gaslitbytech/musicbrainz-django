@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "social_django",  # social-auth-app-django
     # 'crispy_forms', # django crispy forms
     "leaflet",  # django-leaflet
+    "world",  # https://docs.djangoproject.com/en/3.0/ref/contrib/gis/tutorial/
 ]
 
 MIDDLEWARE = [

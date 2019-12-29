@@ -1,17 +1,25 @@
 # musicbrainz-django
-Project to expose https://musicbrainz.org data. Started in #pycon-au-2019 sprints
+
+Project to expose <https://musicbrainz.org> data. Started in #pycon-au-2019 sprints
 
 ## Design Decisions
 
-We are using social-auth-app-django and installed it into our app using https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+We are using social-auth-app-django and installed it into our app using <https://python-social-auth.readthedocs.io/en/latest/configuration/django.html>
 
-And implement our own based on https://python-social-auth-docs.readthedocs.io/en/latest/backends/implementation.html . Since spotify also uses oauth 2 it was copied as a template.
+And implement our own based on <https://python-social-auth-docs.readthedocs.io/en/latest/backends/implementation.html>. Since spotify also uses oauth 2 it was copied as a template.
 
-Create a .env file. In vs code type `code .env` and set up your varibles 1 per line. Get yourself a developer application OAUTH keys from https://musicbrainz.org/account/applications
+To introduce the map using django-leaflet and <https://docs.djangoproject.com/en/3.0/ref/contrib/gis/tutorial/>.
+
+Create a .env file. In vs code type `code .env` and set up your varibles 1 per line.
+
+1. Get yourself a developer application OAUTH keys from <https://musicbrainz.org/account/applications> . The URL is <http://localhost:8000/social/complete/musicbrainz/>
+
+2. Run postgis with docker on port 5430 and create a database caslled musicbrainz-django
 
 ``` text
 SOCIAL_AUTH_MUSICBRAINZ_KEY=
 SOCIAL_AUTH_MUSICBRAINZ_SECRET=YOURSECRET
+DATABASE_URL=postgres://postgres@localhost:5430/musicbrainz-django
 ```
 
 And use the following everytime your .env changes to update your Terminal with the correct environmnet varibales.
@@ -44,7 +52,7 @@ Note your Terminal now having `(venv)`
 pip install -r requirements.txt
 ```
 
-The following are the automaic routes that come with python social auth
+The following are the automaic routes that come with python social auth.
 
 ``` text
 ^login/(?P<backend>[^/]+)/$ [name='begin']
@@ -67,9 +75,7 @@ Change to dir to django root
 cd musicbrainz/
 ```
 
-
-
 ## Known issues
 
-Refresh token is not populated.
-http://localhost:8000/social/complete/musicbrainz/ is used for the vue version
+1. Refresh token is not populated.
+2. <http://localhost:8000/social/complete/musicbrainz/> is used for the vue version
