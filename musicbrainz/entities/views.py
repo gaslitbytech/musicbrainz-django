@@ -8,6 +8,8 @@ import requests
 
 from .forms import ArtistSearchForm
 from .models import Area
+from musicbrainz.utils import json_response
+
 
 LOG = logging.getLogger(__name__)
 
@@ -88,5 +90,4 @@ class AreaListView(ListView):
 
     def get(self, *args, **kwargs):
         all_area = self.get_queryset()
-        response = JsonResponse(all_area)
-        return response
+        return json_response(all_area)
