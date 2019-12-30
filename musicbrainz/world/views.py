@@ -1,5 +1,6 @@
+from django.db.models import Q
 from django.core.serializers import serialize
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic.list import View, ListView
 
 from .models import WorldBorder, Location
@@ -23,10 +24,12 @@ class LocationListView(ListView):
     model = Location
 
     def get(self, *args, **kwargs):
-        return JsonResponse({
-            'data': serialize(
-                'geojson', Location.objects.all(),
+        return HttpResponse(
+            serialize(
+                'geojson', Location.objects.filter(
+                    (Q(country="Australia") | Q(country="Mexico"))
+                ).all(),
                 geometry_field='position',
                 fields=('iata', 'name',)
             )
-        })
+        )

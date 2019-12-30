@@ -84,5 +84,5 @@ def run_airports():
             location.tz = row["Tz"] if row["Tz"] != "\\N" else None
             location.type = row["Type"]
             location.source = row["Source"]
-            location.position=Point(location.latitude, location.longitude, srid=4326)
+            location.position=Point(location.longitude, location.latitude, srid=4326)
             location.save()
