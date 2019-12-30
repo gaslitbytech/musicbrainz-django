@@ -2,6 +2,8 @@
 
 Project to expose <https://musicbrainz.org> data. Started in #pycon-au-2019 sprints
 
+This evolved into a test bed of other experiments learing django.
+
 ## Design Decisions
 
 We are using social-auth-app-django and installed it into our app using <https://python-social-auth.readthedocs.io/en/latest/configuration/django.html>
@@ -9,6 +11,8 @@ We are using social-auth-app-django and installed it into our app using <https:/
 And implement our own based on <https://python-social-auth-docs.readthedocs.io/en/latest/backends/implementation.html>. Since spotify also uses oauth 2 it was copied as a template.
 
 To introduce the map using django-leaflet and <https://docs.djangoproject.com/en/3.0/ref/contrib/gis/tutorial/>.
+
+To build on geodjango learning we can use <https://openflights.org/data.html>
 
 Create a .env file. In vs code type `code .env` and set up your varibles 1 per line.
 
@@ -78,4 +82,4 @@ cd musicbrainz/
 ## Known issues
 
 1. Refresh token is not populated.
-2. <http://localhost:8000/social/complete/musicbrainz/> is used for the vue version
+2. <http://localhost:8000/social/complete/musicbrainz/> is used for the vue version.

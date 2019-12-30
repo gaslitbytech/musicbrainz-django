@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+ipython = "*"
 
 [packages]
 django = "==2.2.4"
@@ -14,6 +15,7 @@ django-classy-settings = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
 json-default = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.7"

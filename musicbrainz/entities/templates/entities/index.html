@@ -7,7 +7,7 @@
       .leaflet-container { height: 100%; }
     </style>
     <script type="text/javascript">
-      var dataurl = '{% url "world:border" %}';
+      var dataurl = '{% url "world:location" %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
         // Download GeoJSON data with Ajax
@@ -18,6 +18,7 @@
           .then(function(data) {
             L.geoJson(data, {
               onEachFeature: function onEachFeature(feature, layer) {
+                alert();
                 var props = feature.properties;
                 var content = `<img width="300" src="${props.picture_url}"/><h3>${props.title}</h3><p>${props.description}</p>`;
                 layer.bindPopup(content);
