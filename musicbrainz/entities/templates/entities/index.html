@@ -8,8 +8,52 @@
     </style>
     <script type="text/javascript">
       var dataurl = '{% url "world:location" %}';
+
+      // Copoed from https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
+      function geoFindMe(map) {
+        const status = document.querySelector('#status');
+        const mapLink = document.querySelector('#map-link');
+        let latitude  = null;
+        let longitude = null;
+        mapLink.href = '';
+        mapLink.textContent = '';
+
+        function success(position) {
+          latitude  = position.coords.latitude;
+          longitude = position.coords.longitude;
+          status.textContent = '';
+          mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+          mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+
+          return new L.LatLng(latitude, longitude);
+        }
+
+        function error() {
+          latitude  = -42.836101532;
+          longitude = 47.509994507;
+          status.textContent = 'Unable to retrieve your location';
+          return new L.LatLng(-42.836101532, 147.509994507);  // Default Hobart
+        }
+
+        if (!navigator.geolocation) {
+          status.textContent = 'Geolocation is not supported by your browser';
+          return new L.LatLng(-42.836101532, 147.509994507);  // Default Hobart
+        } else {
+          status.textContent = 'Locating…';
+          return navigator.geolocation.getCurrentPosition(success, error).then(map.setView(latitude, longitude, 12));
+        }
+      }
+
+      // document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
+        // TODO remove hard code
+        map.setView(-42.836101532, 147.509994507, 12);
+
+        // Hack would prefer to set view with this param
+        geoFindMe(map);
+
         // Download GeoJSON data with Ajax
         fetch(dataurl)
           .then(function(resp) {
@@ -33,7 +77,13 @@
             <a href="{% url "social:begin" "spotify" %}">spotify</a>
         </div>
         <div>
+          <button id = "find-me">Show my location</button><br/>
+          <p id = "status"></p>
+          <a id = "map-link" target="_blank"></a>
+        </div>
+        <div>
             {% leaflet_map "main" %}
         </div>
+        
     </body>
 </html>
