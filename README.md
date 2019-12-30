@@ -34,7 +34,7 @@ export $(grep -v '^#' .env | xargs -0)
 
 ## Configure Development
 
-Install your dev environment from virtualenv
+Install your dev environment from Pipenv or virtualenv. This project talks through virtualenv though commits a copy of Pipfile's.
 
 ### virtualenv
 
