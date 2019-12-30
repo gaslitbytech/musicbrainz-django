@@ -3,9 +3,13 @@ import logging
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.generic.list import View, ListView
+
 import requests
 
 from .forms import ArtistSearchForm
+from .models import Area
+from musicbrainz.utils import json_response
+
 
 LOG = logging.getLogger(__name__)
 
@@ -78,3 +82,12 @@ class IndexView(ListView):
 
     def get_queryset(self, **kwargs):
         return []
+
+
+# see class based views
+class AreaListView(ListView):
+    model = Area
+
+    def get(self, *args, **kwargs):
+        all_area = self.get_queryset()
+        return json_response(all_area)

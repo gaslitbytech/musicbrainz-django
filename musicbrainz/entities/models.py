@@ -2,7 +2,7 @@ import datetime
 import uuid
 
 from django.contrib.auth.models import User
-from django.db import models
+from django.contrib.gis.db import models
 from django.utils import timezone
 
 import requests, json
@@ -107,6 +107,9 @@ class Artist(models.Model):
 
 
 class ArtistSearch(models.Model):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
     alias = models.TextField(blank=True, null=True)  # 	an alias attached to the artist
     area = models.TextField(blank=True, null=True)  # 	the artist's main associated area
     arid = models.UUIDField(
@@ -196,3 +199,14 @@ class Collection(models.Model):
             print(data)
 
         return r.status_code
+
+
+class Area(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = (
+        models.TextField()
+    )
+    sort_name = (
+        models.TextField()
+    )
+    geom = models.MultiPolygonField(srid=4326)

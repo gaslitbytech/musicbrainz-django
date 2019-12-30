@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+ipython = "*"
+
+[packages]
+django = "==2.2.4"
+social-auth-app-django = "==3.1.0"
+django-leaflet = "*"
+black = "*"
+django-classy-settings = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
+json-default = "*"
+pytz = "*"
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

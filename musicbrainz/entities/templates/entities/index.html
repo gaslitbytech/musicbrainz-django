@@ -1,3 +1,39 @@
-<h1>Hi</h1>>
-<a href="{% url "social:begin" "musicbrainz" %}">musicbrainz</a>
-<a href="{% url "social:begin" "spotify" %}">spotify</a>
+{% load leaflet_tags %}
+<html>
+  <head>
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <style>
+      .leaflet-container { height: 100%; }
+    </style>
+    <script type="text/javascript">
+      var dataurl = '{% url "world:location" %}';
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties;
+                var content = `<h3>${props.iata}</h3><p>${props.name}</p>`;
+                layer.bindPopup(content);
+            }}).addTo(map);
+          });
+      });
+    </script>
+  </head>
+    <body>
+        <div>
+            <h1>Hi</h1>>
+            <a href="{% url "social:begin" "musicbrainz" %}">musicbrainz</a>
+            <a href="{% url "social:begin" "spotify" %}">spotify</a>
+        </div>
+        <div>
+            {% leaflet_map "main" %}
+        </div>
+    </body>
+</html>
