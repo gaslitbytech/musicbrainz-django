@@ -10,6 +10,23 @@
       var dataurl = '{% url "world:location" %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
+
+        // TODO remove hard code
+        map.setView([42.63, 41.509994507], 12);
+
+        function success(position) {
+          map.setView([position.coords.latitude, position.coords.longitude], 8);
+        }
+
+        function error() {
+          alert("Could not get location");
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          success, 
+          error
+        );
+
         // Download GeoJSON data with Ajax
         fetch(dataurl)
           .then(function(resp) {
