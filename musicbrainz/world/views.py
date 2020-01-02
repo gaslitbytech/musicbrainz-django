@@ -36,8 +36,13 @@ class LocationListView(ListView):
         # East:-86.62170410156251
         # West:-91.56555175781251
 
-        ne = (23.003908026630658, -86.62170410156251)
-        sw = (18.380592091462194, -91.56555175781251)
+        north = self.request.GET.get('north') or '23.003908026630658'
+        south = self.request.GET.get('south') or '18.380592091462194'
+        east = self.request.GET.get('east') or '-86.62170410156251'
+        west = self.request.GET.get('west') or '-91.56555175781251'
+
+        ne = (north, east)
+        sw = (south, west)
         xmin=sw[1]
         ymin=sw[0]
         xmax=ne[1]

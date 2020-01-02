@@ -20,20 +20,8 @@
         map.setView([42.63, 41.509994507], 12);
 
         map.on("moveend", function () {
-         console.log("Centre:" + map.getCenter().toString());
-         console.log(
-          "Bounds: "+
-          "\nNorth:" + map.getBounds().getNorth() + 
-          "\nSouth:" + map.getBounds().getSouth() + 
-          "\nEast:" + map.getBounds().getEast() + 
-          "\nWest:" + map.getBounds().getWest());
-
-          north = map.getBounds().getNorth; 
-          south = map.getBounds().getSouth; 
-          east = map.getBounds().getEast; 
-          west = map.getBounds().getWest;
-
-          update();
+         console.log("Update Centre:" + map.getCenter().toString());
+         update();
         });
 
         function success(position) {
@@ -46,8 +34,24 @@
         }
 
         function update()  {
+
+          var north = String(map.getBounds().getNorth()); 
+          var south = String(map.getBounds().getSouth()); 
+          var east = String(map.getBounds().getEast()); 
+          var west = String(map.getBounds().getWest());
+
+          console.log(
+            "Update Bounds: "+
+            "\nNorth:" + map.getBounds().getNorth() + 
+            "\nSouth:" + map.getBounds().getSouth() + 
+            "\nEast:" + map.getBounds().getEast() + 
+            "\nWest:" + map.getBounds().getWest()
+          );
+
           // Download GeoJSON data with Ajax
-          fetch(dataurl)
+          let url = dataurl.concat("?north=", north, "&south=", south, "&east=", east, "&west=", west);
+          console.log("URL:" + url);
+          fetch(url)
             .then(function(resp) {
               return resp.json();
             })
