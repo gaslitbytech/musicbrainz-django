@@ -10,36 +10,61 @@
       var dataurl = '{% url "world:location" %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
+        
+        var north = 89.54203477001494;
+        var south = -89.54203477001494;
+        var east = 316.40625;
+        var west = -316.40625;
 
         // TODO remove hard code
         map.setView([42.63, 41.509994507], 12);
 
+        map.on("moveend", function () {
+         console.log("Centre:" + map.getCenter().toString());
+         console.log(
+          "Bounds: "+
+          "\nNorth:" + map.getBounds().getNorth() + 
+          "\nSouth:" + map.getBounds().getSouth() + 
+          "\nEast:" + map.getBounds().getEast() + 
+          "\nWest:" + map.getBounds().getWest());
+
+          north = map.getBounds().getNorth; 
+          south = map.getBounds().getSouth; 
+          east = map.getBounds().getEast; 
+          west = map.getBounds().getWest;
+
+          update();
+        });
+
         function success(position) {
           map.setView([position.coords.latitude, position.coords.longitude], 8);
+          update();
         }
 
         function error() {
           alert("Could not get location");
         }
 
+        function update()  {
+          // Download GeoJSON data with Ajax
+          fetch(dataurl)
+            .then(function(resp) {
+              return resp.json();
+            })
+            .then(function(data) {
+              L.geoJson(data, {
+                onEachFeature: function onEachFeature(feature, layer) {
+                  var props = feature.properties;
+                  var content = `<h3>${props.iata}</h3><p>${props.name}</p>`;
+                  layer.bindPopup(content);
+              }}).addTo(map);
+            });
+        }
+
         navigator.geolocation.getCurrentPosition(
           success, 
           error
         );
-
-        // Download GeoJSON data with Ajax
-        fetch(dataurl)
-          .then(function(resp) {
-            return resp.json();
-          })
-          .then(function(data) {
-            L.geoJson(data, {
-              onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties;
-                var content = `<h3>${props.iata}</h3><p>${props.name}</p>`;
-                layer.bindPopup(content);
-            }}).addTo(map);
-          });
       });
     </script>
   </head>
