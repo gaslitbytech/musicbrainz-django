@@ -16,14 +16,36 @@ To build on geodjango learning we can use <https://openflights.org/data.html>
 
 Create a .env file. In vs code type `code .env` and set up your varibles 1 per line.
 
-1. Get yourself a developer application OAUTH keys from <https://musicbrainz.org/account/applications> . The URL is <http://localhost:8000/social/complete/musicbrainz/>
+1. Get yourself a developer application OAUTH keys from <https://musicbrainz.org/account/applications>. The redirect URL is <http://localhost:8000/complete/musicbrainz/>
 
-2. Run postgis with docker on port 5430 and create a database caslled musicbrainz-django
+2. Repeat for spotify <https://developer.spotify.com/dashboard/applications>. The redirect URL is <http://localhost:8000/complete/spotify/>
+
+3. Run postgis with docker on port 5430 and create a database called musicbrainz-django
+
+``` bash
+export MOUNT_DATA_PATH=~/Documents/postgresql-11/data
+docker run --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data -d mdillon/postgis:11-alpine
+
+# I have a local postgresql installed on my dev box. Prefer docker with postgis
+/Library/PostgreSQL/12/bin/psql --host=localhost --port=5430 --username=postgres
+postgres=# CREATE DATABASE "musicbrainz-django";
+```
 
 ``` text
 SOCIAL_AUTH_MUSICBRAINZ_KEY=
 SOCIAL_AUTH_MUSICBRAINZ_SECRET=YOURSECRET
 DATABASE_URL=postgres://postgres@localhost:5430/musicbrainz-django
+```
+
+Load the airports
+
+``` shell
+python manage.py shell
+```
+
+``` python
+from world.load import run_airports
+run_airports()
 ```
 
 And use the following everytime your .env changes to update your Terminal with the correct environmnet varibales.
@@ -79,7 +101,12 @@ Change to dir to django root
 cd musicbrainz/
 ```
 
-## Known issues
+## TODO
 
-1. Refresh token is not populated.
-2. <http://localhost:8000/social/complete/musicbrainz/> is used for the vue version.
+1. musicbrains api. Get the refresh token.
+
+2. Workout how access.
+
+3. Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.
+
+4. Make thise instructions use Pipenv.

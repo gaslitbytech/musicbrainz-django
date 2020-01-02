@@ -53,3 +53,11 @@ class Location(models.Model):
     # Returns the string representation of the model.
     def __str__(self):
         return self.iata
+
+
+class MapBoundView(models.Model):
+    north = models.FloatField('North', blank=True, null=True)
+    south = models.FloatField('South', blank=True, null=True)
+    east = models.FloatField('East', blank=True, null=True)
+    west = models.FloatField('West', blank=True, null=True)
+    zoom = models.IntegerField('Zoom', blank=True, null=True)

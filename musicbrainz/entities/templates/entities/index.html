@@ -10,36 +10,65 @@
       var dataurl = '{% url "world:location" %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
+        
+        var north = 89.54203477001494;
+        var south = -89.54203477001494;
+        var east = 316.40625;
+        var west = -316.40625;
 
         // TODO remove hard code
         map.setView([42.63, 41.509994507], 12);
 
+        map.on("moveend", function () {
+         console.log("Update Centre:" + map.getCenter().toString());
+         update();
+        });
+
         function success(position) {
           map.setView([position.coords.latitude, position.coords.longitude], 8);
+          update();
         }
 
         function error() {
           alert("Could not get location");
         }
 
+        function update()  {
+
+          var north = String(map.getBounds().getNorth()); 
+          var south = String(map.getBounds().getSouth()); 
+          var east = String(map.getBounds().getEast()); 
+          var west = String(map.getBounds().getWest());
+
+          console.log(
+            "Update Bounds: "+
+            "\nNorth:" + map.getBounds().getNorth() + 
+            "\nSouth:" + map.getBounds().getSouth() + 
+            "\nEast:" + map.getBounds().getEast() + 
+            "\nWest:" + map.getBounds().getWest()
+          );
+
+          // Download GeoJSON data with Ajax
+          let url = dataurl.concat("?north=", north, "&south=", south, "&east=", east, "&west=", west);
+          console.log("URL:" + url);
+          fetch(url)
+            .then(function(resp) {
+              return resp.json();
+            })
+            .then(function(data) {
+              L.geoJson(data, {
+                onEachFeature: function onEachFeature(feature, layer) {
+                  var props = feature.properties;
+                  var content = `<h3>${props.iata}</h3><p>${props.name}</p>`;
+                  layer.bindPopup(content);
+              }}).addTo(map);
+            });
+        }
+
         navigator.geolocation.getCurrentPosition(
           success, 
           error
         );
-
-        // Download GeoJSON data with Ajax
-        fetch(dataurl)
-          .then(function(resp) {
-            return resp.json();
-          })
-          .then(function(data) {
-            L.geoJson(data, {
-              onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties;
-                var content = `<h3>${props.iata}</h3><p>${props.name}</p>`;
-                layer.bindPopup(content);
-            }}).addTo(map);
-          });
       });
     </script>
   </head>
