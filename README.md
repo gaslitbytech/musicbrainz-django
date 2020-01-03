@@ -24,7 +24,7 @@ Create a .env file. In vs code type `code .env` and set up your varibles 1 per l
 
 ``` bash
 export MOUNT_DATA_PATH=~/Documents/postgresql-11/data
-docker run --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data -d mdillon/postgis:11-alpine
+docker run --rm --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data -d mdillon/postgis:11-alpine
 
 # I have a local postgresql installed on my dev box. Prefer docker with postgis
 /Library/PostgreSQL/12/bin/psql --host=localhost --port=5430 --username=postgres
@@ -110,3 +110,12 @@ cd musicbrainz/
 3. Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.
 
 4. Make thise instructions use Pipenv.
+
+    or just keep requirements.txt upto date using Pipenv.
+
+    ``` sh
+    jq -r '.default
+            | to_entries[]
+            | .key + .value.version' \
+        Pipfile.lock > requirements.txt
+    ```

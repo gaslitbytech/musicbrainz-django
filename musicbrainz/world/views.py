@@ -30,12 +30,9 @@ class LocationListView(ListView):
     model = Location
 
     def get(self, *args, **kwargs):
-        # (Q(country="Australia") | Q(country="Mexico"))
-        # North:23.003908026630658
-        # South:18.380592091462194
-        # East:-86.62170410156251
-        # West:-91.56555175781251
-
+        """
+        Use current map bounds to get the locations within the users map view.
+        """
         north = self.request.GET.get('north') or '23.003908026630658'
         south = self.request.GET.get('south') or '18.380592091462194'
         east = self.request.GET.get('east') or '-86.62170410156251'
@@ -51,11 +48,9 @@ class LocationListView(ListView):
 
         geom = Polygon.from_bbox(bbox)
 
-        # TODO
-        # Went back to Postgresql 11 and postgis 2.5 for this.
+        # TODO Went back to Postgresql 11 and postgis 2.5 for this.
         # https://trac.osgeo.org/postgis/ticket/4608
 
-        print(f'bbox:{bbox}')
         return HttpResponse(
             serialize(
                 'geojson', Location.objects.filter(
