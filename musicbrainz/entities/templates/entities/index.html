@@ -7,6 +7,7 @@
       .leaflet-container { height: 100%; }
     </style>
     <script type="text/javascript">
+      var dict = {};
       var dataurl = '{% url "world:location" %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
@@ -61,8 +62,21 @@
                   var props = feature.properties;
                   var content = `<h3>${props.iata}</h3><p>${props.name}</p>`;
                   layer.bindPopup(content);
-              }}).addTo(map);
+                },
+                filter: removeDuplicates
+              }).addTo(map);
+
+              function removeDuplicates(feature) {
+                var previous_value = dict[feature.properties.iata];
+                console.log("Previous:" + previous_value + "\tCurrent:"+feature.properties.iata);
+                if(previous_value === undefined)
+                {
+                  dict[feature.properties.iata] = feature;
+                  return true;
+                }
+              }
             });
+            console.log("dict:" + dict);
         }
 
         navigator.geolocation.getCurrentPosition(
