@@ -127,8 +127,8 @@ STATIC_URL = "/static/"
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.spotify.SpotifyOAuth2",
+    "social_core.backends.musicbrainz.MusicBrainzOAuth2",
     "django.contrib.auth.backends.ModelBackend",
-    "musicbrainz.oauth2.MusicBrainzOAuth2",
 )
 
 SOCIAL_AUTH_STRATEGY = "social_django.strategy.DjangoStrategy"

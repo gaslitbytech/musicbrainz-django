@@ -139,8 +139,7 @@ The following are the automaic routes that come with python social auth.
 ## TODO
 
 1. musicbrains api. Get the refresh token.
-
-2. Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.
+2. ~~Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.~~
 
 3. Make thise instructions use Pipenv.
 

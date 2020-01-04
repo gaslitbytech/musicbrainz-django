@@ -9,6 +9,7 @@ ipython = "*"
 [packages]
 django = "*"
 social-auth-app-django = "*"
+social-core = {editable = true,git = "https://github.com/tourdownunder/social-core.git",ref = "feature/add-musicbrainz-backend"}
 django-leaflet = "*"
 black = "*"
 django-classy-settings = "*"
