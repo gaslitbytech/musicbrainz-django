@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fbf9816c62f4c4285bfc58f7252341325d49f134c447682e275de72157f8523b"
+            "sha256": "48448482f489f3614443f66568dd23a914828bcb14f3068d21e38d4fee061462"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -71,7 +71,6 @@
                 "sha256:6687150770438374ab581bb7a1b327a847dd9c5749e396102de3fad4e8a3ef93",
                 "sha256:f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"
             ],
-            "markers": "python_version >= '3.0'",
             "version": "==0.6.0"
         },
         "dj-database-url": {
@@ -84,11 +83,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:315b11ea265dd15348d47f2cbb044ef71da2018f6e582fed875c889758e6f844",
-                "sha256:b61295749be7e1c42467c55bcabdaee9fbe9496fdf9ed2e22cef44d9de2ff953"
+                "sha256:4f2c913303be4f874015993420bf0bd8fd2097a9c88e6b49c6a92f9bdd3fb13a",
+                "sha256:8c3575f81e11390893860d97e1e0154c47512f180ea55bd84ce8fa69ba8051ca"
             ],
             "index": "pypi",
-            "version": "==3.0.1"
+            "version": "==3.0.2"
         },
         "django-classy-settings": {
             "hashes": [
@@ -183,7 +182,6 @@
                 "sha256:0086da6b6ef3161cfe50fb1ee5cceaf2cda1700019fda03c2c5c440ca6abe4fa",
                 "sha256:628d365d687e12da12d02c6691170f4451db28d6d68d050007e4a40065868502"
             ],
-            "markers": "python_version >= '3.0'",
             "version": "==3.1.0"
         },
         "pytz": {
@@ -250,13 +248,10 @@
             "index": "pypi",
             "version": "==3.1.0"
         },
-        "social-auth-core": {
-            "hashes": [
-                "sha256:47cd2458c8fefd02466b0c514643e02ad8b61d8b4b69f7573e80882e3a97b0f0",
-                "sha256:8320666548a532eb158968eda542bbe1863682357c432d8c4e28034a7f1e3b58",
-                "sha256:d81ed681e3c0722300b61a0792c5db5d21206793f95ca810f010c1cc931c8d89"
-            ],
-            "version": "==3.2.0"
+        "social-core": {
+            "editable": true,
+            "git": "https://github.com/tourdownunder/social-core.git",
+            "ref": "1df54aa88690e26eff05d0211b138e309d422a1a"
         },
         "sqlparse": {
             "hashes": [
@@ -297,6 +292,13 @@
             ],
             "version": "==1.4.0"
         },
+        "unidecode": {
+            "hashes": [
+                "sha256:1d7a042116536098d05d599ef2b8616759f02985c85b4fef50c78a5aaf10822a",
+                "sha256:2b6aab710c2a1647e928e36d69c21e76b453cd455f4e2621000e54b2a9b8cce8"
+            ],
+            "version": "==1.1.1"
+        },
         "urllib3": {
             "hashes": [
                 "sha256:a8a318824cc77d1fd4b2bec2ded92646630d7fe8619497b142c84a9e6f5a7293",
@@ -330,11 +332,11 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:0b67031a659fd7046cbf8c4efc2a0d514ee050434dfede76f540cfa6f806f65e",
-                "sha256:cc70e2111d1629e31ef9ff445529f8bb2b4fc4f93bfe140c33fe18cf36fde072"
+                "sha256:0f4bcf18293fb666df8511feec0403bdb7e061a5842ea6e88a3177b0ceb34ead",
+                "sha256:387686dd7fc9caf29d2fddcf3116c4b07a11d9025701d220c589a430b0171d8a"
             ],
             "index": "pypi",
-            "version": "==7.11.0"
+            "version": "==7.11.1"
         },
         "ipython-genutils": {
             "hashes": [
@@ -409,10 +411,10 @@
         },
         "wcwidth": {
             "hashes": [
-                "sha256:3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e",
-                "sha256:f4ebe71925af7b40a864553f761ed559b43544f8f71746c2d756c7fe788ade7c"
+                "sha256:8fd29383f539be45b20bd4df0dc29c20ba48654a41e661925e612311e9f3c603",
+                "sha256:f28b3e8a6483e5d49e7f8949ac1a78314e740333ae305b4ba5defd3e74fb37a8"
             ],
-            "version": "==0.1.7"
+            "version": "==0.1.8"
         }
     }
 }

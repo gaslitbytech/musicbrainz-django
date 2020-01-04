@@ -187,9 +187,10 @@ class Collection(models.Model):
     @staticmethod
     def fetch():
         # HACK. use the request opject
-        user = User.objects.get(id=1)
+        # Neet to make sure the user id is that that musicbrainz logs in as is
+        user = User.objects.get(id=2)
         social = user.social_auth.get(provider="musicbrainz")
-        url = "https://musicbrainz.org/ws/2/collection?fmt=json"
+        url = "https://musicbrainz.org/ws/2/artist?fmt=json"
         print("URL: %s", url)
         r = requests.get(
             url, params={"access_token": social.extra_data["access_token"]}

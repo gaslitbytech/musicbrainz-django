@@ -22,14 +22,13 @@ Create a .env file. In vs code type `code .env` and set up your varibles 1 per l
 
 3. Run postgis with docker on port 5430 and create a database called musicbrainz-django
 
-``` bash
-export MOUNT_DATA_PATH=~/Documents/postgresql-11/data
-docker run --rm --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data -d mdillon/postgis:11-alpine
+    ``` bash
+    MOUNT_DATA_PATH=~/Documents/postgresql-11/data docker run --rm --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data mdillon/postgis:11-alpine
 
-# I have a local postgresql installed on my dev box. Prefer docker with postgis
-/Library/PostgreSQL/12/bin/psql --host=localhost --port=5430 --username=postgres
-postgres=# CREATE DATABASE "musicbrainz-django";
-```
+    # I have a local postgresql 12 installed on my dev box. Prefer docker with postgis
+    /Library/PostgreSQL/12/bin/psql --host=localhost --port=5430 --username=postgres
+    postgres=# CREATE DATABASE "musicbrainz-django";
+    ```
 
 ``` text
 SOCIAL_AUTH_MUSICBRAINZ_KEY=
@@ -37,26 +36,23 @@ SOCIAL_AUTH_MUSICBRAINZ_SECRET=YOURSECRET
 DATABASE_URL=postgres://postgres@localhost:5430/musicbrainz-django
 ```
 
-Load the airports
-
-``` shell
-python manage.py shell
-```
-
-``` python
-from world.load import run_airports
-run_airports()
-```
-
 And use the following everytime your .env changes to update your Terminal with the correct environmnet varibales.
-
-``` shell
-export $(grep -v '^#' .env | xargs -0)
-```
 
 ## Configure Development
 
 Install your dev environment from Pipenv or virtualenv. This project talks through virtualenv though commits a copy of Pipfile's.
+
+### pipenv
+
+``` shell
+pipenv install --dev
+```
+
+Activate the shell. VS Code terminal may do this for you. Needs to be done every Terminal window.
+
+``` shell
+pipenv shell
+```
 
 ### virtualenv
 
@@ -64,6 +60,10 @@ This is required once only. Unless you need to delete your venv directory. Note 
 
 ``` shell
 virtualenv --python=python3.7 venv
+```
+
+``` shell
+export $(grep -v '^#' .env | xargs -0)
 ```
 
 Every time you log into your terminal. Note . is just short for typing `source`
@@ -78,6 +78,55 @@ Note your Terminal now having `(venv)`
 pip install -r requirements.txt
 ```
 
+### Once per db
+
+Create the schema on the database
+
+``` shell
+python manage.py migrate
+```
+
+Load the airports
+
+``` shell
+python manage.py shell
+```
+
+``` python
+from world.load import run_airports
+run_airports()
+```
+
+### Daily Developing
+
+Everytime you start a Terminal
+
+#### pipenv daily
+
+For Pipenv
+
+``` shell
+pipenv shell
+```
+
+#### virtualenv daily
+
+Every time you log into your terminal. Note . is just short for typing `source`
+
+``` shell
+. venv/bin/activate
+```
+
+### common
+
+Change to dir to django root
+
+``` shell
+cd musicbrainz/
+```
+
+### Misc Notes
+
 The following are the automaic routes that come with python social auth.
 
 ``` text
@@ -87,29 +136,12 @@ The following are the automaic routes that come with python social auth.
 ^disconnect/(?P<backend>[^/]+)/(?P<association_id>\d+)/$ [name='disconnect_individual']
 ```
 
-## Get Started Developing
-
-Every time you log into your terminal. Note . is just short for typing `source`
-
-``` shell
-. venv/bin/activate
-```
-
-Change to dir to django root
-
-``` shell
-cd musicbrainz/
-```
-
 ## TODO
 
 1. musicbrains api. Get the refresh token.
+2. ~~Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.~~
 
-2. Workout how access.
-
-3. Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.
-
-4. Make thise instructions use Pipenv.
+3. Make thise instructions use Pipenv.
 
     or just keep requirements.txt upto date using Pipenv.
 
@@ -119,3 +151,5 @@ cd musicbrainz/
             | .key + .value.version' \
         Pipfile.lock > requirements.txt
     ```
+
+4. Consider integration with Song Kick <https://www.songkick.com/developer/getting-started>
