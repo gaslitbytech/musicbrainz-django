@@ -24,7 +24,7 @@ Create a .env file. In vs code type `code .env` and set up your varibles 1 per l
 
     ``` bash
     MOUNT_DATA_PATH=~/Documents/postgresql-11/data docker run --rm --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data mdillon/postgis:11-alpine
-
+    
     # I have a local postgresql 12 installed on my dev box. Prefer docker with postgis
     /Library/PostgreSQL/12/bin/psql --host=localhost --port=5430 --username=postgres
     postgres=# CREATE DATABASE "musicbrainz-django";
@@ -111,10 +111,19 @@ pipenv shell
 
 #### virtualenv daily
 
-Every time you log into your terminal. Note . is just short for typing `source`
+Every time you log into your terminal. Note `.` is just short for typing `source`
 
 ``` shell
 . venv/bin/activate
+```
+
+Lets just keep requirements.txt upto date to Pipenv when developers use Pipenv as source of truth.
+
+``` sh
+jq -r '.default
+        | to_entries[]
+        | .key + .value.version' \
+    Pipfile.lock > requirements.txt
 ```
 
 ### common
@@ -130,18 +139,18 @@ cd musicbrainz/
 The following are the automaic routes that come with python social auth.
 
 ``` text
-^login/(?P<backend>[^/]+)/$ [name='begin']
-^complete/(?P<backend>[^/]+)/$ [name='complete']
-^disconnect/(?P<backend>[^/]+)/$ [name='disconnect']
-^disconnect/(?P<backend>[^/]+)/(?P<association_id>\d+)/$ [name='disconnect_individual']
+^social/login/(?P<backend>[^/]+)/$ [name='begin']
+^social/complete/(?P<backend>[^/]+)/$ [name='complete']
+^social/disconnect/(?P<backend>[^/]+)/$ [name='disconnect']
+^social/disconnect/(?P<backend>[^/]+)/(?P<association_id>\d+)/$ [name='disconnect_individual']
 ```
 
 ## TODO
 
 1. musicbrains api. Get the refresh token.
-2. ~~Use python social auth fork for music brainz <http://localhost:8000/social/complete/musicbrainz/>. Like done in <https://github.com/tourdownunder/django-vue-template>.~~
+2. ~~Use python social auth fork <https://github.com/tourdownunder/social-core> that includes musicbrainz. Like done in <https://github.com/tourdownunder/django-vue-template>.~~
 
-3. Make thise instructions use Pipenv.
+3. ~~Make thise instructions use Pipenv.
 
     or just keep requirements.txt upto date using Pipenv.
 
@@ -150,6 +159,10 @@ The following are the automaic routes that come with python social auth.
             | to_entries[]
             | .key + .value.version' \
         Pipfile.lock > requirements.txt
-    ```
+    ```~~
 
 4. Consider integration with Song Kick <https://www.songkick.com/developer/getting-started>
+
+5. Get a handle of python social auth. Start by fixing #1 and understand the pipeline <https://python-social-auth.readthedocs.io/en/latest/pipeline.html> as it seems neat.
+
+    Relevant Tutorial: <https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html>
