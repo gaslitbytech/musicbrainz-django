@@ -33,22 +33,15 @@ class LocationListView(ListView):
         """
         Use current map bounds to get the locations within the users map view.
         """
-        north = self.request.GET.get('north') or '23.003908026630658'
-        south = self.request.GET.get('south') or '18.380592091462194'
-        east = self.request.GET.get('east') or '-86.62170410156251'
-        west = self.request.GET.get('west') or '-91.56555175781251'
-
-        ne = (north, east)
-        sw = (south, west)
-        xmin=sw[1]
-        ymin=sw[0]
-        xmax=ne[1]
-        ymax=ne[0]
+        # TODO remove random coords
+        xmin=self.request.GET.get('west') or '0'
+        ymin=self.request.GET.get('south') or '0'
+        xmax=self.request.GET.get('east') or '0'
+        ymax=self.request.GET.get('north') or '0'
         bbox = (xmin, ymin, xmax, ymax)
-
         geom = Polygon.from_bbox(bbox)
 
-        # TODO Went back to Postgresql 11 and postgis 2.5 for this.
+        # TODO Went back to Postgresql 11 and postgis 2.5 for this query.
         # https://trac.osgeo.org/postgis/ticket/4608
 
         return HttpResponse(

@@ -11,5 +11,5 @@ urlpatterns = [
         include("world.urls", namespace="world")
     ),
     path("admin/", admin.site.urls),
-    url("", include("social_django.urls", namespace="social")),
+    url("social/", include("social_django.urls", namespace="social")),
 ]
