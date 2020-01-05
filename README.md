@@ -22,12 +22,16 @@ Create a .env file. In vs code type `code .env` and set up your varibles 1 per l
 
 3. Run postgis with docker on port 5430 and create a database called musicbrainz-django
 
+    I have a local postgresql 12 installed on my dev macosx dev box to have psql and other tools. I just prefer docker for postgis.
+
+    psql should be in path though on macos default is `/Library/PostgreSQL/12/bin/psql`
+
     ``` bash
     MOUNT_DATA_PATH=~/Documents/postgresql-11/data docker run --rm --name alpine-pg11-postgis2dot5 -p 5430:5432 -v $MOUNT_DATA_PATH:/var/lib/postgresql/data mdillon/postgis:11-alpine
-    
-    # I have a local postgresql 12 installed on my dev box. Prefer docker with postgis
-    /Library/PostgreSQL/12/bin/psql --host=localhost --port=5430 --username=postgres
-    postgres=# CREATE DATABASE "musicbrainz-django";
+
+    sql --host=localhost --port=5430 --username=postgres <<EOF
+    CREATE DATABASE "musicbrainz-django";
+    EOF
     ```
 
 ``` text
@@ -152,17 +156,23 @@ The following are the automaic routes that come with python social auth.
 
 3. ~~Make thise instructions use Pipenv.
 
-    or just keep requirements.txt upto date using Pipenv.
+    or just keep requirements.txt upto date using Pipenv.~~
 
     ``` sh
     jq -r '.default
             | to_entries[]
             | .key + .value.version' \
         Pipfile.lock > requirements.txt
-    ```~~
+    ```
 
 4. Consider integration with Song Kick <https://www.songkick.com/developer/getting-started>
+
+   Applied for API key through above website. It can take 7 upto days.
 
 5. Get a handle of python social auth. Start by fixing #1 and understand the pipeline <https://python-social-auth.readthedocs.io/en/latest/pipeline.html> as it seems neat.
 
     Relevant Tutorial: <https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html>
+
+6. See if using QGIS is possible intead of creating own admin screens.
+
+   Relevant Tutorial: <https://docs.qgis.org/testing/en/docs/training_manual/index.html>
